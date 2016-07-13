@@ -1,10 +1,8 @@
 package inputs
 
-type Metric struct {
-  Data string
-}
+import "github.com/allen13/gollect/data"
 
 type Input interface {
-  Gather(metricsC chan Metric)
+  Gather(metricsC chan data.Metric)
   Description() string
 }

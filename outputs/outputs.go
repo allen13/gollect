@@ -1,7 +1,9 @@
 package outputs
 
-import "github.com/allen13/gollect/inputs"
+import (
+  "github.com/allen13/gollect/data"
+)
 
 type Output interface {
-  Write(data inputs.Metric)
+  Write(data data.Metric)
 }

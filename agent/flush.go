@@ -5,10 +5,10 @@ import (
   "log"
   "sync"
   "github.com/allen13/gollect/outputs"
-  "github.com/allen13/gollect/inputs"
+  "github.com/allen13/gollect/data"
 )
 
-func FlushAgent(metricsC chan inputs.Metric, shutdown chan struct{}, wg* sync.WaitGroup){
+func FlushAgent(metricsC chan data.Metric, shutdown chan struct{}, wg* sync.WaitGroup){
   defer wg.Done()
 
   fmt.Println("starting flush agent...")
@@ -24,7 +24,7 @@ func FlushAgent(metricsC chan inputs.Metric, shutdown chan struct{}, wg* sync.Wa
   }
 }
 
-func flushToOutputs(metric inputs.Metric, shutdown chan struct{}){
+func flushToOutputs(metric data.Metric, shutdown chan struct{}){
   for _,output := range []outputs.Output{&outputs.Stdout{}} {
     go output.Write(metric)
   }

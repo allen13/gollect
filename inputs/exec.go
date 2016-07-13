@@ -5,6 +5,7 @@ import (
   "time"
   "os/exec"
   "errors"
+  "github.com/allen13/gollect/data"
 )
 
 var (
@@ -16,11 +17,14 @@ type Exec struct{
   Duration string
 }
 
-func (exec* Exec)Gather(metricsC chan Metric){
+func (exec* Exec)Gather(metricsC chan data.Metric){
   log.Println("gathering " + exec.Name)
   duration,_ := time.ParseDuration(exec.Duration)
   time.Sleep(duration)
-  metricsC <- Metric{"collected " + exec.Name + " after " + duration.String()}
+  result := make(map[string]interface{})
+  result["responseTimeSeconds"] = duration.Seconds()
+  metric,_ := data.NewMetric("sl-api",nil, result, time.Now())
+  metricsC <- metric
 }
 
 func (exec* Exec)Description()(string){

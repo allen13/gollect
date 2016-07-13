@@ -6,29 +6,23 @@ import (
   "log"
   "github.com/allen13/gollect/agent"
   "sync"
-  "github.com/allen13/gollect/inputs"
+  "github.com/allen13/gollect/data"
 )
 
 
 func main(){
 
   shutdown := createShutdownChannel()
-  metricsC := make(chan inputs.Metric)
+  metricsC := make(chan data.Metric)
 
   var wg sync.WaitGroup
   wg.Add(2)
+
   go agent.FlushAgent(metricsC, shutdown, &wg)
   go agent.GatherAgent(metricsC, shutdown, &wg)
 
-  for{
-    select {
-    case <-shutdown:
-      //Wait for flush and gather to shutdown
-      wg.Wait()
-      log.Println("shutting down gollect")
-      return
-    }
-  }
+  wg.Wait()
+  log.Println("shutting down gollect")
 }
 
 func createShutdownChannel()(chan struct{}){

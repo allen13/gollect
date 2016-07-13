@@ -6,9 +6,10 @@ import (
   "time"
   "github.com/allen13/gollect/inputs"
   "sync"
+  "github.com/allen13/gollect/data"
 )
 
-func GatherAgent(metricsC chan inputs.Metric, shutdown chan struct{}, wg* sync.WaitGroup){
+func GatherAgent(metricsC chan data.Metric, shutdown chan struct{}, wg* sync.WaitGroup){
   defer wg.Done()
 
   fmt.Println("starting gather agent...")
@@ -26,7 +27,7 @@ func GatherAgent(metricsC chan inputs.Metric, shutdown chan struct{}, wg* sync.W
   }
 }
 
-func gatherAllInputs(metricsC chan inputs.Metric, shutdown chan struct{}){
+func gatherAllInputs(metricsC chan data.Metric, shutdown chan struct{}){
   for _,input := range []inputs.Input{&inputs.Exec{"one","1s"},&inputs.Exec{"two","2s"}}{
     go input.Gather(metricsC)
   }
