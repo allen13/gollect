@@ -7,6 +7,7 @@ import (
   "github.com/allen13/gollect/agent"
   "sync"
   "github.com/allen13/gollect/data"
+  "github.com/allen13/gollect/outputs"
 )
 
 
@@ -17,6 +18,8 @@ func main(){
 
   var wg sync.WaitGroup
   wg.Add(2)
+
+  outputs.InitOutputs()
 
   go agent.FlushAgent(metricsC, shutdown, &wg)
   go agent.GatherAgent(metricsC, shutdown, &wg)

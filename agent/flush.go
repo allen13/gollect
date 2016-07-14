@@ -25,7 +25,7 @@ func FlushAgent(metricsC chan data.Metric, shutdown chan struct{}, wg* sync.Wait
 }
 
 func flushToOutputs(metric data.Metric, shutdown chan struct{}){
-  for _,output := range []outputs.Output{&outputs.Stdout{}} {
-    go output.Write(metric)
+  for _,output := range outputs.Outputs {
+    go output.Write([]data.Metric{metric})
   }
 }

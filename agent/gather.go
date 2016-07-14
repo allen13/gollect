@@ -28,7 +28,11 @@ func GatherAgent(metricsC chan data.Metric, shutdown chan struct{}, wg* sync.Wai
 }
 
 func gatherAllInputs(metricsC chan data.Metric, shutdown chan struct{}){
-  for _,input := range []inputs.Input{&inputs.Exec{"one","1s"},&inputs.Exec{"two","2s"}}{
+  err, execInput := inputs.NewExec("echo '{\"test\":3}'", "10s", "json")
+  if err != nil {
+    log.Println(err)
+  }
+  for _,input := range []inputs.Input{execInput}{
     go input.Gather(metricsC)
   }
 }
